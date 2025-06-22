@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message Encryption & Decryption Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+      text-align: center;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
+    }
+    .output {
+      margin-top: 20px;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Message Encryption Tool</h2>
+    <p>Type a message and key to encrypt using a basic Caesar cipher.</p>
+
+    <textarea id="encryptMessage" placeholder="Enter your message..."></textarea>
+    <input type="number" id="encryptKey" placeholder="Enter key (e.g., 3)" />
+
+    <button onclick="encryptMessage()">Encrypt</button>
+
+    <div class="output" id="encryptResult"></div>
+  </div>
+
+  <div class="container" style="margin-top: 40px;">
+    <h2>🔓 Message Decryption Tool</h2>
+    <p>Type an encrypted message and key to decrypt it using a basic Caesar cipher.</p>
+
+    <textarea id="decryptMessage" placeholder="Enter encrypted message..."></textarea>
+    <input type="number" id="decryptKey" placeholder="Enter key (e.g., 3)" />
+
+    <button onclick="decryptMessage()">Decrypt</button>
+
+    <div class="output" id="decryptResult"></div>
+  </div>
+
+  <script>
+    function encryptMessage() {
+      const message = document.getElementById('encryptMessage').value;
+      const key = parseInt(document.getElementById('encryptKey').value);
+      let encrypted = '';
+
+      for (let i = 0; i < message.length; i++) {
+        let char = message[i];
+        if (char.match(/[a-z]/i)) {
+          const code = message.charCodeAt(i);
+          let base = code >= 65 && code <= 90 ? 65 : 97;
+          char = String.fromCharCode(((code - base + key) % 26) + base);
+        }
+        encrypted += char;
+      }
+
+      document.getElementById('encryptResult').textContent = '🔒 Encrypted Message:\n' + encrypted;
+    }
+
+    function decryptMessage() {
+      const message = document.getElementById('decryptMessage').value;
+      const key = parseInt(document.getElementById('decryptKey').value);
+      let decrypted = '';
+
+      for (let i = 0; i < message.length; i++) {
+        let char = message[i];
+        if (char.match(/[a-z]/i)) {
+          const code = message.charCodeAt(i);
+          let base = code >= 65 && code <= 90 ? 65 : 97;
+          char = String.fromCharCode(((code - base - key + 26) % 26) + base);
+        }
+        decrypted += char;
+      }
+
+      document.getElementById('decryptResult').textContent = '🔓 Decrypted Message:\n' + decrypted;
+    }
+  </script>
+</body>
+</html>
